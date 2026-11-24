@@ -1,0 +1,6 @@
+{%- assign _e = include.e -%}
+{%- if _e.number -%}{%- assign _n = _e.number -%}{%- else -%}
+{%- assign _same = site.entries | where: "type", _e.type | sort: "date" -%}
+{%- for _s in _same -%}{%- if _s.url == _e.url -%}{%- assign _n = forloop.index -%}{%- endif -%}{%- endfor -%}
+{%- endif -%}
+{%- case _e.type -%}{%- when "chart" -%}CH{%- when "historical" -%}HX{%- else -%}TH{%- endcase -%}-{{ _n | prepend: "000" | slice: -4, 4 }}

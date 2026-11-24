@@ -1,0 +1,35 @@
+---
+title: Timeline
+description: Historical finds from the archive, in chronological order.
+permalink: /timeline/
+---
+{%- assign hist = site.entries | where: "type", "historical" | sort: "year", "last" -%}
+<section class="mast">
+  <div class="wrap">
+    <p class="eyebrow mono">HX · Historical finds · {{ hist.size }} on file</p>
+    <h1>Timeline</h1>
+    <p class="lede">Documents, photographs and finds from the archive, placed in the year they come from.</p>
+  </div>
+</section>
+<section class="wrap">
+  {%- if hist.size == 0 %}
+  <div class="empty"><h2>No historical finds yet</h2><p>Entries with type “historical” and a year appear here in order.</p></div>
+  {%- else %}
+  <ol class="timeline">
+    {%- for e in hist %}
+    {%- capture cat -%}{% include catno.html e=e %}{%- endcapture %}
+    <li>
+      <div class="yr">{{ e.year | default: "Undated" }}</div>
+      <a class="tl-item" href="{{ e.url | relative_url }}">
+        {%- if e.image %}<img src="{{ e.image | relative_url }}" alt="" loading="lazy">{% endif %}
+        <div>
+          <span class="kind historical mono">{{ cat }}{% if e.era %} · {{ e.era }}{% endif %}</span>
+          <h3>{{ e.title }}</h3>
+          <p>{{ e.content | strip_html | normalize_whitespace | truncate: 180 }}</p>
+        </div>
+      </a>
+    </li>
+    {%- endfor %}
+  </ol>
+  {%- endif %}
+</section>

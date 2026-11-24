@@ -1,0 +1,26 @@
+{%- assign e = include.e -%}
+{%- capture cat -%}{% include catno.html e=e %}{%- endcapture -%}
+{%- assign label = "Thread" -%}{%- if e.type == "chart" -%}{%- assign label = "Chart" -%}{%- elsif e.type == "historical" -%}{%- assign label = "Historical" -%}{%- endif -%}
+{%- assign posts = e.content | split: "<p" | size | minus: 1 -%}
+<a class="card k-{{ e.type }}" href="{{ e.url | relative_url }}"
+   data-type="{{ e.type }}" data-date="{{ e.date | date: '%Y-%m-%d' }}" data-year="{{ e.year }}"
+   data-title="{{ e.title | escape }}" data-pinned="{% if e.pinned %}1{% else %}0{% endif %}"
+   data-tags="|{{ e.tags | join: '|' | downcase }}|" data-series="{{ e.series | escape }}"
+   {%- capture hay -%}{{ e.title }} {{ cat }} {{ e.era }} {{ e.year }} {{ e.series }} {{ e.tags | join: ' ' }} {{ e.sources | join: ' ' }} {{ e.content | strip_html | normalize_whitespace | truncate: 4000 }}{%- endcapture %}
+   data-search="{{ hay | downcase | escape }}">
+  {%- if e.image %}<img class="thumb" src="{{ e.image | relative_url }}" alt="" loading="lazy">{% endif %}
+  <div class="in">
+    <div class="meta">
+      <span class="kind {{ e.type }}">{{ cat }} · {{ label }}</span>
+      <span>{% if e.type == "historical" and e.era %}{{ e.era }}{% elsif e.type == "historical" and e.year %}{{ e.year }}{% else %}{{ e.date | date: "%d %b %Y" | upcase }}{% endif %}</span>
+    </div>
+    <h3>{{ e.title }}</h3>
+    <p>{{ e.excerpt_text | default: e.content | strip_html | normalize_whitespace | truncate: 200 }}</p>
+    <div class="foot">
+      {%- if e.pinned %}<span class="pin">Pinned</span>{% endif -%}
+      {%- if e.series %}<span class="series">Series · {{ e.series }}</span>{% endif -%}
+      {%- if e.type == "thread" and posts > 1 %}<span>{{ posts }} posts</span>{% endif -%}
+      {%- for t in e.tags limit: 3 %}<span>#{{ t | downcase }}</span>{% endfor -%}
+    </div>
+  </div>
+</a>

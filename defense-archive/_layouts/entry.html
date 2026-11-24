@@ -1,0 +1,85 @@
+---
+layout: default
+---
+{%- capture cat -%}{% include catno.html e=page %}{%- endcapture -%}
+{%- assign label = "Thread" -%}{%- if page.type == "chart" -%}{%- assign label = "Chart" -%}{%- elsif page.type == "historical" -%}{%- assign label = "Historical" -%}{%- endif -%}
+{%- assign posts = content | split: "<p" | size | minus: 1 -%}
+<article class="entry wrap k-{{ page.type }}">
+  <a class="back" href="{{ '/' | relative_url }}">← Back to the archive</a>
+
+  <div class="meta"><span class="kind {{ page.type }}">{{ cat }} · {{ label }}</span>{% if page.pinned %}<span class="pin">Pinned</span>{% endif %}</div>
+  <h1>{{ page.title }}</h1>
+
+  <dl class="facts">
+    <div><dt>File no.</dt><dd class="mono">{{ cat }}</dd></div>
+    <div><dt>{% if page.type == "historical" %}Filed{% else %}Posted{% endif %}</dt><dd class="mono">{{ page.date | date: "%d %b %Y" | upcase }}</dd></div>
+    {%- if page.type == "historical" and page.era or page.year %}<div><dt>Era / year</dt><dd>{{ page.era | default: page.year }}</dd></div>{% endif %}
+    {%- if page.type == "thread" and posts > 1 %}<div><dt>Length</dt><dd>{{ posts }} posts</dd></div>{% endif %}
+    {%- if page.series %}
+      {%- assign ser = site.entries | where: "series", page.series | sort: "date" -%}
+      {%- for s in ser %}{% if s.url == page.url %}{% assign part = forloop.index %}{% endif %}{% endfor -%}
+      <div><dt>Series</dt><dd>{{ page.series }} · part {{ part }} of {{ ser.size }}</dd></div>
+    {%- endif %}
+  </dl>
+
+  <div class="actions">
+    {%- if page.link %}<a class="btn primary" href="{{ page.link }}" target="_blank" rel="noopener">View original on X ↗</a>{% endif %}
+    <button class="btn" type="button" data-copy="{{ page.url | absolute_url }}">Copy link</button>
+    <button class="btn" type="button" data-copy="{{ site.author }}{% if site.x_handle %} (@{{ site.x_handle }}){% endif %}, “{{ page.title }},” {{ site.title }}, {{ page.date | date: '%-d %B %Y' }}, {{ page.url | absolute_url }}">Copy citation</button>
+  </div>
+
+  {%- if page.image or page.gallery %}
+  <div class="figs">
+    {%- assign figs = "" | split: "" -%}
+    {%- if page.image %}{% assign figs = figs | push: page.image %}{% endif -%}
+    {%- for g in page.gallery %}{% if g != page.image %}{% assign figs = figs | push: g %}{% endif %}{% endfor -%}
+    {%- for f in figs %}
+    <figure>
+      <button class="zoom" type="button" data-full="{{ f | relative_url }}" aria-label="Enlarge figure {{ forloop.index }}">
+        <img src="{{ f | relative_url }}" alt="{{ page.title | escape }}, figure {{ forloop.index }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+      </button>
+      <figcaption>Fig. {{ forloop.index }}{% if figs.size > 1 %} of {{ figs.size }}{% endif %} · click to enlarge</figcaption>
+    </figure>
+    {%- endfor %}
+  </div>
+  {%- endif %}
+
+  <div class="body{% if page.type == 'thread' and posts > 1 %} thread-body{% endif %}">
+    {{ content }}
+  </div>
+
+  {%- if page.sources and page.sources.size > 0 %}
+  <h2 class="section-h">Sources</h2>
+  <ol class="sources">{% for s in page.sources %}<li>{{ s | markdownify | remove: "<p>" | remove: "</p>" | strip }}</li>{% endfor %}</ol>
+  {%- endif %}
+
+  {%- if page.tags and page.tags.size > 0 %}
+  <h2 class="section-h">Tags</h2>
+  <div class="tags">{% for t in page.tags %}<a class="tag" href="{{ '/' | relative_url }}?tag={{ t | downcase | url_encode }}">#{{ t | downcase }}</a>{% endfor %}</div>
+  {%- endif %}
+
+  {%- if page.series %}
+  <h2 class="section-h">In this series</h2>
+  <ol class="series-list">
+    {%- for s in ser %}<li>{% if s.url == page.url %}<strong>{{ s.title }}</strong> <span class="mono">(this entry)</span>{% else %}<a href="{{ s.url | relative_url }}">{{ s.title }}</a>{% endif %}</li>{% endfor %}
+  </ol>
+  {%- endif %}
+
+  {%- assign related = "" | split: "" -%}
+  {%- for other in site.entries -%}
+    {%- if other.url != page.url and related.size < 3 -%}
+      {%- assign hit = false -%}
+      {%- for t in page.tags %}{% if other.tags contains t %}{% assign hit = true %}{% endif %}{% endfor -%}
+      {%- if hit %}{% assign related = related | push: other %}{% endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if related.size > 0 %}
+  <h2 class="section-h">Related in the archive</h2>
+  <div class="grid related">{% for r in related %}{% include card.html e=r %}{% endfor %}</div>
+  {%- endif %}
+
+  <nav class="prevnext" aria-label="More entries">
+    {%- if page.previous %}<a href="{{ page.previous.url | relative_url }}"><span>← Older</span>{{ page.previous.title }}</a>{% else %}<span></span>{% endif -%}
+    {%- if page.next %}<a class="next" href="{{ page.next.url | relative_url }}"><span>Newer →</span>{{ page.next.title }}</a>{% endif -%}
+  </nav>
+</article>

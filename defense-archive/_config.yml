@@ -1,0 +1,44 @@
+# ─────────────────────────────────────────────
+#  Edit these once, then you mostly never touch this file.
+# ─────────────────────────────────────────────
+title: Defense Desk Archive
+description: Threads, charts and historical finds on defense and military affairs, filed and searchable.
+author: Your Name
+x_handle: yourhandle          # without the @
+
+# If your repo is named <username>.github.io, leave baseurl empty.
+# If it's named anything else (e.g. "archive"), set baseurl: "/archive"
+url: "https://yourhandle.github.io"
+baseurl: ""
+
+# ─────────────────────────────────────────────
+#  Site machinery — no need to edit below
+# ─────────────────────────────────────────────
+twitter:
+  username: yourhandle
+  card: summary_large_image
+
+collections:
+  entries:
+    output: true
+    permalink: /:collection/:name/
+
+defaults:
+  - scope: { path: "", type: entries }
+    values: { layout: entry }
+  - scope: { path: "" }
+    values: { layout: default }
+
+feed:
+  path: /posts-feed.xml
+  collections:
+    entries:
+      path: /feed.xml
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+markdown: kramdown
+exclude: [README.md, Gemfile, Gemfile.lock, .pages.yml, vendor]

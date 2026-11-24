@@ -1,0 +1,65 @@
+---
+title: Archive
+---
+{%- assign all = site.entries | sort: "date" | reverse -%}
+{%- assign nThread = site.entries | where: "type", "thread" | size -%}
+{%- assign nChart = site.entries | where: "type", "chart" | size -%}
+{%- assign nHist = site.entries | where: "type", "historical" | size -%}
+<section class="mast">
+  <div class="wrap">
+    <p class="eyebrow mono">Open-source defense analysis · {{ site.entries.size }} on file{% if all.first %} · last filed {{ all.first.date | date: "%d %b %Y" | upcase }}{% endif %}</p>
+    <h1>{{ site.title }}</h1>
+    <p class="lede">{{ site.description }}</p>
+  </div>
+</section>
+
+<section class="tally" aria-label="Archive totals">
+  <div class="wrap">
+    <div><b>{{ site.entries.size }}</b><span>Entries</span></div>
+    <div><b>{{ nThread }}</b><span>Threads</span></div>
+    <div><b>{{ nChart }}</b><span>Charts</span></div>
+    <div><b>{{ nHist }}</b><span>Historical</span></div>
+  </div>
+</section>
+
+<section class="tools">
+  <div class="wrap">
+    <input class="search" id="q" type="search" placeholder="Search titles, text, tags, sources…" aria-label="Search the archive">
+    <div class="chips" role="group" aria-label="Filter by type">
+      <button class="chip" type="button" data-type="all" aria-pressed="true">All</button>
+      <button class="chip" type="button" data-type="thread" aria-pressed="false">Threads</button>
+      <button class="chip" type="button" data-type="chart" aria-pressed="false">Charts</button>
+      <button class="chip" type="button" data-type="historical" aria-pressed="false">Historical</button>
+    </div>
+    <select class="sel" id="sort" aria-label="Sort order">
+      <option value="new">Newest first</option>
+      <option value="old">Oldest first</option>
+      <option value="era">Historical era</option>
+      <option value="title">Title A–Z</option>
+    </select>
+  </div>
+  {%- assign tagstr = "" -%}
+  {%- for e in site.entries %}{% for t in e.tags %}{% assign tl = t | downcase %}{% assign tagstr = tagstr | append: tl | append: "|" %}{% endfor %}{% endfor -%}
+  {%- assign tags = tagstr | split: "|" | uniq | sort -%}
+  {%- if tags.size > 0 %}
+  <div class="wrap tagline" aria-label="Filter by tag">
+    {%- for t in tags %}<button class="tag" type="button" data-tag="{{ t | escape }}" aria-pressed="false">#{{ t }}</button>{% endfor %}
+  </div>
+  {%- endif %}
+</section>
+
+<section class="wrap">
+  <p class="status mono" id="status" role="status"></p>
+  {%- if site.entries.size == 0 %}
+  <div class="empty">
+    <h2>Nothing on file yet</h2>
+    <p>Add your first entry from the admin (see README) and it shows up here.</p>
+  </div>
+  {%- else %}
+  <div class="grid" id="grid">
+    {%- for e in all %}{% if e.pinned %}{% include card.html e=e %}{% endif %}{% endfor -%}
+    {%- for e in all %}{% unless e.pinned %}{% include card.html e=e %}{% endunless %}{% endfor %}
+  </div>
+  <div class="empty" id="nomatch" hidden><p>No entries match. Clear the search or pick another filter.</p></div>
+  {%- endif %}
+</section>
