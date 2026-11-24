@@ -1,0 +1,71 @@
+# Admin forms for Pages CMS (https://pagescms.org): sign in with GitHub, pick this repo,
+# and you get a form for adding entries and uploading images. No server needed.
+media:
+  input: media
+  output: /media
+
+content:
+  - name: entries
+    label: Archive entries
+    type: collection
+    path: _entries
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, type, date]
+      primary: title
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: type
+        label: Type
+        type: select
+        required: true
+        default: thread
+        options:
+          values:
+            - { value: thread, label: Thread }
+            - { value: chart, label: Chart }
+            - { value: historical, label: Historical find }
+      - name: date
+        label: Date posted
+        type: date
+        required: true
+      - name: link
+        label: Link to original on X (optional)
+        type: string
+      - name: image
+        label: Cover image (shows on the card and in the X preview)
+        type: image
+      - name: gallery
+        label: More images
+        type: image
+        list: true
+      - name: year
+        label: Year (historical only; places it on the Timeline)
+        type: number
+      - name: era
+        label: Era label (historical only, e.g. "Cold War")
+        type: string
+      - name: series
+        label: Series name (optional; groups multi-part threads)
+        type: string
+      - name: tags
+        label: Tags
+        type: string
+        list: true
+      - name: pinned
+        label: Pin to top of the archive
+        type: boolean
+      - name: sources
+        label: Sources (one per item)
+        type: string
+        list: true
+      - name: body
+        label: Text (for threads, one paragraph per post)
+        type: rich-text

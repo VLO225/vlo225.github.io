@@ -2,20 +2,20 @@
 #  Edit these once, then you mostly never touch this file.
 # ─────────────────────────────────────────────
 title: Defense Desk Archive
-description: Threads, charts and historical finds on defense and military affairs, filed and searchable.
-author: Your Name
-x_handle: yourhandle          # without the @
+description: Archive of my X (formerly Twitter) account. Threads, charts and historical finds on defense and military affairs, filed and searchable.
+author: VLO225
+x_handle: VLO225              # without the @
 
 # If your repo is named <username>.github.io, leave baseurl empty.
 # If it's named anything else (e.g. "archive"), set baseurl: "/archive"
-url: "https://yourhandle.github.io"
+url: "https://vlo225.github.io"
 baseurl: ""
 
 # ─────────────────────────────────────────────
 #  Site machinery — no need to edit below
 # ─────────────────────────────────────────────
 twitter:
-  username: yourhandle
+  username: VLO225
   card: summary_large_image
 
 collections:
