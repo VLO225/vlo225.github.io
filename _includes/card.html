@@ -8,7 +8,7 @@
    data-tags="|{{ e.tags | join: '|' | downcase }}|" data-series="{{ e.series | escape }}"
    {%- capture hay -%}{{ e.title }} {{ cat }} {{ e.era }} {{ e.year }} {{ e.series }} {{ e.tags | join: ' ' }} {{ e.sources | join: ' ' }} {{ e.content | strip_html | normalize_whitespace | truncate: 4000 }}{%- endcapture %}
    data-search="{{ hay | downcase | escape }}">
-  {%- if e.image %}<img class="thumb" src="{{ e.image | relative_url }}" alt="" loading="lazy">{% endif %}
+  {%- if e.image and e.auto_card != true %}<img class="thumb" src="{{ e.image | relative_url }}" alt="" loading="lazy">{% endif %}
   <div class="in">
     <div class="meta">
       <span class="kind {{ e.type }}">{{ cat }} · {{ label }}</span>

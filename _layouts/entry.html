@@ -20,6 +20,7 @@ layout: default
       {%- for s in ser %}{% if s.url == page.url %}{% assign part = forloop.index %}{% endif %}{% endfor -%}
       <div><dt>Series</dt><dd>{{ page.series }} · part {{ part }} of {{ ser.size }}</dd></div>
     {%- endif %}
+    <div data-views="page" hidden><dt>Views</dt><dd class="mono">—</dd></div>
   </dl>
 
   <div class="actions">
@@ -28,11 +29,12 @@ layout: default
     <button class="btn" type="button" data-copy="{{ site.author }}{% if site.x_handle %} (@{{ site.x_handle }}){% endif %}, “{{ page.title }},” {{ site.title }}, {{ page.date | date: '%-d %B %Y' }}, {{ page.url | absolute_url }}">Copy citation</button>
   </div>
 
-  {%- if page.image or page.gallery %}
+  {%- assign cover = page.image -%}{%- if page.auto_card %}{% assign cover = nil %}{% endif -%}
+  {%- if cover or page.gallery %}
   <div class="figs">
     {%- assign figs = "" | split: "" -%}
-    {%- if page.image %}{% assign figs = figs | push: page.image %}{% endif -%}
-    {%- for g in page.gallery %}{% if g != page.image %}{% assign figs = figs | push: g %}{% endif %}{% endfor -%}
+    {%- if cover %}{% assign figs = figs | push: cover %}{% endif -%}
+    {%- for g in page.gallery %}{% if g != cover %}{% assign figs = figs | push: g %}{% endif %}{% endfor -%}
     {%- for f in figs %}
     <figure>
       <button class="zoom" type="button" data-full="{{ f | relative_url }}" aria-label="Enlarge figure {{ forloop.index }}">

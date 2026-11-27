@@ -6,6 +6,10 @@ description: Archive of my X (formerly Twitter) account. Threads, charts and his
 author: VLO225
 x_handle: VLO225              # without the @
 
+# Visit counter: your GoatCounter code (the "vlo225" in vlo225.goatcounter.com).
+# Leave empty to hide the counter.
+goatcounter: vlo225
+
 # If your repo is named <username>.github.io, leave baseurl empty.
 # If it's named anything else (e.g. "archive"), set baseurl: "/archive"
 url: "https://vlo225.github.io"
@@ -41,4 +45,4 @@ plugins:
   - jekyll-sitemap
 
 markdown: kramdown
-exclude: [README.md, Gemfile, Gemfile.lock, .pages.yml, vendor]
+exclude: [README.md, Gemfile, Gemfile.lock, .pages.yml, vendor, _cards]

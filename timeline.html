@@ -21,7 +21,7 @@ permalink: /timeline/
     <li>
       <div class="yr">{{ e.year | default: "Undated" }}</div>
       <a class="tl-item" href="{{ e.url | relative_url }}">
-        {%- if e.image %}<img src="{{ e.image | relative_url }}" alt="" loading="lazy">{% endif %}
+        {%- if e.image and e.auto_card != true %}<img src="{{ e.image | relative_url }}" alt="" loading="lazy">{% endif %}
         <div>
           <span class="kind historical mono">{{ cat }}{% if e.era %} · {{ e.era }}{% endif %}</span>
           <h3>{{ e.title }}</h3>

@@ -80,3 +80,21 @@
     lb.addEventListener("click", (e) => { if (e.target === lb) lb.close(); });
   }
 })();
+
+// ── Visit counter (GoatCounter) ──
+(() => {
+  const code = document.body.dataset.gc;
+  if (!code || !/^[a-z0-9-]+$/i.test(code)) return;
+  document.querySelectorAll("[data-views]").forEach(async (box) => {
+    const path = box.dataset.views === "TOTAL" ? "TOTAL" : encodeURIComponent(location.pathname);
+    let count = "0";
+    try {
+      const r = await fetch(`https://${code}.goatcounter.com/counter/${path}.json`);
+      if (r.ok) { const j = await r.json(); count = String(j.count || "0").trim(); }
+      else if (r.status !== 404) return; // 404 just means no visits recorded yet
+    } catch { return; }
+    const out = box.querySelector("b, dd");
+    out.textContent = count;
+    box.hidden = false;
+  });
+})();

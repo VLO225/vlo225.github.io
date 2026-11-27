@@ -67,5 +67,5 @@ content:
         type: string
         list: true
       - name: body
-        label: Text (for threads, one paragraph per post)
-        type: rich-text
+        label: Text (for threads, leave a blank line between posts)
+        type: text

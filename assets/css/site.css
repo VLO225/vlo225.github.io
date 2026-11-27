@@ -48,7 +48,8 @@ button, input, select { font: inherit; color: inherit; }
 
 /* tally */
 .tally { border-block: 1px solid var(--line); background: var(--card); }
-.tally .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
+.tally .wrap { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; }
+.tally .visits b { color: var(--accent); }
 .tally .wrap > div { padding: 14px 0 14px 16px; border-left: 1px solid var(--line); }
 .tally .wrap > div:first-child { border-left: 0; padding-left: 0; }
 .tally b { display: block; font-family: var(--display); font-size: 34px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
@@ -153,6 +154,9 @@ button, input, select { font: inherit; color: inherit; }
 .site-foot .wrap { padding-block: 18px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 
 @media (max-width: 640px) {
+  .tally .wrap { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); }
+  .tally .wrap > div:nth-child(4) { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+  .tally .wrap > div:nth-child(5) { border-top: 1px solid var(--line); }
   .tally b { font-size: 26px; }
   .tally .wrap > div { padding-left: 10px; }
   .timeline::before { left: 6px; }
